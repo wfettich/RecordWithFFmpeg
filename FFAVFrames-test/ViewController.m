@@ -19,12 +19,12 @@
 @interface ViewController()
 -(void) startRecording;
 -(void) stopRecording;
--(UIImage*) screenshot;
+//-(UIImage*) screenshot;
 @end
 
 @implementation ViewController
-
-@synthesize startStopButton,imageView,video;
+@synthesize imageView;
+@synthesize video;
 
 - (void)dealloc
 {

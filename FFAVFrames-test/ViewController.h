@@ -24,10 +24,10 @@
     
 }
 
-@property (nonatomic) IBOutlet UIButton *startStopButton;
-@property (nonatomic) IBOutlet UIImageView *imageView;
-@property (nonatomic) Frames *video;
--(void)displayNextFrame:(NSTimer *)timer;
+@property (nonatomic,assign) IBOutlet UIButton *startStopButton;
+@property (nonatomic,assign) IBOutlet UIImageView *imageView;
+@property (nonatomic,strong) Frames *video;
+//-(void)displayNextFrame:(NSTimer *)timer;
 -(IBAction) handleStartStopTapped: (id) sender;
 - (void)saveMovieToCameraRoll;
 -(void) writeSample;
