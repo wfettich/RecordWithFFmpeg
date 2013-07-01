@@ -129,7 +129,7 @@ int downloadSegment(
 
     //open rtsp
     AVDictionary *options=NULL;
-    av_dict_set(&options, "rtsp_transport","tcp",0);
+    av_dict_set(&options, "rtsp_transport","udp",0);
     //av_dict_set(&options,"r","100",0);
     //test video, always working: rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov
 

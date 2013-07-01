@@ -22,14 +22,13 @@
 		B64FFFD7177C6684002C585C /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B64FFFD6177C6684002C585C /* libz.dylib */; };
 		B64FFFD9177C6798002C585C /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B64FFFD8177C6798002C585C /* libiconv.dylib */; };
 		B68624C3177DF3C3005728C1 /* test1.c in Sources */ = {isa = PBXBuildFile; fileRef = B68624C2177DF3C3005728C1 /* test1.c */; };
-		B68624CB177E0A4D005728C1 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B68624C4177E0A4D005728C1 /* libavcodec.a */; };
-		B68624CC177E0A4D005728C1 /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B68624C5177E0A4D005728C1 /* libavdevice.a */; };
-		B68624CD177E0A4D005728C1 /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B68624C6177E0A4D005728C1 /* libavfilter.a */; };
-		B68624CE177E0A4D005728C1 /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B68624C7177E0A4D005728C1 /* libavformat.a */; };
-		B68624CF177E0A4D005728C1 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B68624C8177E0A4D005728C1 /* libavutil.a */; };
-		B68624D1177E0A4D005728C1 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B68624CA177E0A4D005728C1 /* libswscale.a */; };
 		B6B502E317749F6B009D20A6 /* ffmpeg-test-jni.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B502E217749F6B009D20A6 /* ffmpeg-test-jni.m */; };
 		B6B57FEF17818E6C00E911E4 /* libbz2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B57FEE17818E6C00E911E4 /* libbz2.dylib */; };
+		B6B5800F1781CFFC00E911E4 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B5800A1781CFFC00E911E4 /* libavutil.a */; };
+		B6B580101781CFFC00E911E4 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B5800B1781CFFC00E911E4 /* libswscale.a */; };
+		B6B580111781CFFC00E911E4 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B5800C1781CFFC00E911E4 /* libavcodec.a */; };
+		B6B580121781CFFC00E911E4 /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B5800D1781CFFC00E911E4 /* libavformat.a */; };
+		B6B580131781CFFC00E911E4 /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B5800E1781CFFC00E911E4 /* libavdevice.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,15 +53,14 @@
 		B64FFFD6177C6684002C585C /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		B64FFFD8177C6798002C585C /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		B68624C2177DF3C3005728C1 /* test1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test1.c; sourceTree = "<group>"; };
-		B68624C4177E0A4D005728C1 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ffmpeg4ios/bin/armv7/lib/libavcodec.a; sourceTree = "<group>"; };
-		B68624C5177E0A4D005728C1 /* libavdevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavdevice.a; path = ffmpeg4ios/bin/armv7/lib/libavdevice.a; sourceTree = "<group>"; };
-		B68624C6177E0A4D005728C1 /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavfilter.a; path = ffmpeg4ios/bin/armv7/lib/libavfilter.a; sourceTree = "<group>"; };
-		B68624C7177E0A4D005728C1 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = ffmpeg4ios/bin/armv7/lib/libavformat.a; sourceTree = "<group>"; };
-		B68624C8177E0A4D005728C1 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = ffmpeg4ios/bin/armv7/lib/libavutil.a; sourceTree = "<group>"; };
-		B68624CA177E0A4D005728C1 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = ffmpeg4ios/bin/armv7/lib/libswscale.a; sourceTree = "<group>"; };
 		B6B502E217749F6B009D20A6 /* ffmpeg-test-jni.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ffmpeg-test-jni.m"; sourceTree = "<group>"; };
 		B6B502E41774A761009D20A6 /* ffmpeg-test-jni.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ffmpeg-test-jni.h"; sourceTree = "<group>"; };
 		B6B57FEE17818E6C00E911E4 /* libbz2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.dylib; path = usr/lib/libbz2.dylib; sourceTree = SDKROOT; };
+		B6B5800A1781CFFC00E911E4 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = ffmpeg4ios/lib/libavutil.a; sourceTree = "<group>"; };
+		B6B5800B1781CFFC00E911E4 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = ffmpeg4ios/lib/libswscale.a; sourceTree = "<group>"; };
+		B6B5800C1781CFFC00E911E4 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ffmpeg4ios/lib/libavcodec.a; sourceTree = "<group>"; };
+		B6B5800D1781CFFC00E911E4 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = ffmpeg4ios/lib/libavformat.a; sourceTree = "<group>"; };
+		B6B5800E1781CFFC00E911E4 /* libavdevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavdevice.a; path = ffmpeg4ios/lib/libavdevice.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,12 +79,11 @@
 				30D366EC1573CBE1003471CC /* CoreVideo.framework in Frameworks */,
 				30D366C71573C9EA003471CC /* UIKit.framework in Frameworks */,
 				30D366C91573C9EA003471CC /* Foundation.framework in Frameworks */,
-				B68624CB177E0A4D005728C1 /* libavcodec.a in Frameworks */,
-				B68624CC177E0A4D005728C1 /* libavdevice.a in Frameworks */,
-				B68624CD177E0A4D005728C1 /* libavfilter.a in Frameworks */,
-				B68624CE177E0A4D005728C1 /* libavformat.a in Frameworks */,
-				B68624CF177E0A4D005728C1 /* libavutil.a in Frameworks */,
-				B68624D1177E0A4D005728C1 /* libswscale.a in Frameworks */,
+				B6B5800F1781CFFC00E911E4 /* libavutil.a in Frameworks */,
+				B6B580101781CFFC00E911E4 /* libswscale.a in Frameworks */,
+				B6B580111781CFFC00E911E4 /* libavcodec.a in Frameworks */,
+				B6B580121781CFFC00E911E4 /* libavformat.a in Frameworks */,
+				B6B580131781CFFC00E911E4 /* libavdevice.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,13 +93,12 @@
 		30D366B71573C9EA003471CC = {
 			isa = PBXGroup;
 			children = (
+				B6B5800A1781CFFC00E911E4 /* libavutil.a */,
+				B6B5800B1781CFFC00E911E4 /* libswscale.a */,
+				B6B5800C1781CFFC00E911E4 /* libavcodec.a */,
+				B6B5800D1781CFFC00E911E4 /* libavformat.a */,
+				B6B5800E1781CFFC00E911E4 /* libavdevice.a */,
 				B6B57FEE17818E6C00E911E4 /* libbz2.dylib */,
-				B68624C4177E0A4D005728C1 /* libavcodec.a */,
-				B68624C5177E0A4D005728C1 /* libavdevice.a */,
-				B68624C6177E0A4D005728C1 /* libavfilter.a */,
-				B68624C7177E0A4D005728C1 /* libavformat.a */,
-				B68624C8177E0A4D005728C1 /* libavutil.a */,
-				B68624CA177E0A4D005728C1 /* libswscale.a */,
 				B64FFFD8177C6798002C585C /* libiconv.dylib */,
 				B64FFFD6177C6684002C585C /* libz.dylib */,
 				30D366CC1573C9EA003471CC /* FFAVFrames-test */,
@@ -309,7 +305,7 @@
 					"\"$(SRCROOT)/ffmpeg4ios/ffmpeg/libavdevice\"",
 					"\"$(SRCROOT)/ffmpeg4ios/bin/armv7/lib\"",
 					"\"$(SRCROOT)/ffmpeg4ios/lib\"",
-					"\"$(SRCROOT)/i386/lib\"",
+					"\"$(SRCROOT)/lib\"",
 				);
 				PRODUCT_NAME = RecordWithFFmpeg;
 				VALID_ARCHS = armv7;
@@ -336,7 +332,7 @@
 					"\"$(SRCROOT)/ffmpeg4ios/ffmpeg/libavdevice\"",
 					"\"$(SRCROOT)/ffmpeg4ios/bin/armv7/lib\"",
 					"\"$(SRCROOT)/ffmpeg4ios/lib\"",
-					"\"$(SRCROOT)/i386/lib\"",
+					"\"$(SRCROOT)/lib\"",
 				);
 				PRODUCT_NAME = RecordWithFFmpeg;
 				VALID_ARCHS = armv7;

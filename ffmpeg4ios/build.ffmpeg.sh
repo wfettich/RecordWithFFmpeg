@@ -15,26 +15,27 @@ SDK_VERSION="6.1"
 ENABLED_COMPONENTS="--enable-protocol=file --enable-demuxer=mov \
                     --enable-muxer=mpegts --enable-bsf=h264_mp4toannexb"
 
- CONFIGURE_FLAGS=" 
-                    --enable-everything"
+ #CONFIGURE_FLAGS=" 
+ #                   --enable-everything"
 
-# CONFIGURE_FLAGS=" 
-#                    --enable-cross-compile \
-#                    --enable-network \
-#                    --enable-demuxer=mov \
-#                    --enable-demuxer=h264 \
-#                    --enable-protocol=file \
-#                    --enable-avformat \
-#                    --enable-avcodec \
-#                    --enable-decoder=rawvideo \
-#                    --disable-decoder=mjpeg \
-#                    --disable-decoder=h263 \
-#                    --enable-decoder=mpeg4 \
-#                    --enable-decoder=h264 \
-#                    --enable-parser=h264 \                    
-#                    --enable-demuxer=rtsp \
-#                    --enable-pic \
-#                    --enable-zlib"
+ CONFIGURE_FLAGS=" 
+                    --enable-everything \
+                    --enable-cross-compile \
+                    --enable-network \
+                    --enable-demuxer=mov \
+                    --enable-demuxer=h264 \
+                    --enable-protocol=file \
+                    --enable-avformat \
+                    --enable-avcodec \
+                    --enable-decoder=rawvideo \
+                    --disable-decoder=mjpeg \
+                    --disable-decoder=h263 \
+                    --enable-decoder=mpeg4 \
+                    --enable-decoder=h264 \
+                    --enable-parser=h264 \                    
+                    --enable-demuxer=rtsp \
+                    --enable-pic \
+                    --enable-zlib"
 
 # CONFIGURE_FLAGS="--enable-cross-compile
 #                --disable-debug 

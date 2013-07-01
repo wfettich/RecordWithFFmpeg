@@ -92,5 +92,31 @@
          startingLineNumber = "83"
          endingLineNumber = "83">
       </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FFAVFrames-test/ffmpeg-test-jni.m"
+         timestampString = "394378741.05665"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "139"
+         endingLineNumber = "139"
+         landmarkName = "downloadSegment()"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FFAVFrames-test/ffmpeg-test-jni.m"
+         timestampString = "394378771.005855"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "136"
+         endingLineNumber = "136"
+         landmarkName = "downloadSegment()"
+         landmarkType = "7">
+      </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>
