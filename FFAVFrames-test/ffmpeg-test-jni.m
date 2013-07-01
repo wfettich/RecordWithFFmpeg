@@ -142,17 +142,25 @@ int downloadSegment(
        return EXIT_FAILURE;
     }
 
+    NSLog(@"XX 1");
     if(avformat_find_stream_info(context,NULL) < 0)
     {
+        char errbuf[400];
+        av_strerror(error,errbuf,400);
+        NSLog(@"avformat_find_stream_info failed with error %s",errbuf);
+
         return EXIT_FAILURE;
     }
  //search video stream
     for(int  i =0;i<context->nb_streams;i++)
     {
         if(context->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO)
+        {
             video_stream_index = i;
+            NSLog(@"XX 2");
+        }
     }
-
+    NSLog(@"XX 3");
     AVPacket packet;
     av_init_packet(&packet);
 
@@ -160,13 +168,15 @@ int downloadSegment(
     AVOutputFormat* fmt = av_guess_format("mp4",NULL,NULL);
 
     AVFormatContext* oc = avformat_alloc_context();
+//    AVFormatContext* oc = context;
     oc->oformat = fmt;
     oc->duration=100;
     AVDictionary *options2=NULL;
     
     //av_dict_set(&options2,"r","1",0);
     avio_open2(&oc->pb, save_path, AVIO_FLAG_WRITE,NULL,NULL);
-
+    
+    NSLog(@"XX 4");
     AVStream* stream=NULL;
     int cnt = 0;
     //start reading packets from stream and write them to file
@@ -175,6 +185,7 @@ int downloadSegment(
     double delta=0;
     double start_ms=-1;
     
+    NSLog(@"XX 5");
     while(av_read_frame(context,&packet)>=0 &&delta<duration)
     {
         NSLog(@"cnt:: %d",cnt);
@@ -191,13 +202,14 @@ int downloadSegment(
 //        const char* str = (*pEnv)->GetStringUTFChars(pEnv,(jstring) result, NULL);
 //        NSLog(@"%s\n", str);
 //        NSLog(@"cmp: %d",strcmp(str,str2));
-        NSLog(@"1");
+        NSLog(@"XX 6");
 
         if(packet.stream_index == video_stream_index)
         {//packet is video
+            NSLog(@"XX 7");
             if(stream == NULL)
             {//create stream in file
-
+                NSLog(@"XX 8");
                 stream = avformat_new_stream(oc,context->streams[video_stream_index]->codec->codec);
 
                 avcodec_copy_context(stream->codec,context->streams[video_stream_index]->codec);
@@ -216,6 +228,7 @@ NSLog(@"a: %d",a);
        av_free_packet(&packet);
     }
     
+    NSLog(@"XX 9");
     av_read_pause(context);
     av_write_trailer(oc);
     avio_close(oc->pb);
