@@ -60,11 +60,8 @@
         
 		CVReturn cvErr = kCVReturnSuccess;
         
-		
 		// prepare the pixel buffer
 		CVPixelBufferRef pixelBuffer = NULL;
-        
-        
        
         CFDataRef imageData= CGDataProviderCopyData(CGImageGetDataProvider(imageView.image.CGImage));
 		NSLog (@"copied image data");
@@ -104,8 +101,7 @@
     //	// create the AVComposition
     //	[mutableComposition release];
     //	mutableComposition = [[AVMutableComposition alloc] init];
-    
-    
+        
     movieURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%llu.mov", NSTemporaryDirectory(), mach_absolute_time()]];
     
 	
@@ -134,12 +130,12 @@
     
 }
 
--(void) stopRecording {
+-(void) stopRecording
+{
 	
-	
-	[assetWriter finishWriting];
+	[assetWriter finishWritingWithCompletionHandler:^{}];
 	NSLog (@"finished writing");
-    [self saveMovieToCameraRoll];
+//    [self saveMovieToCameraRoll];
     startSampleing=NO;
 }
 
@@ -149,17 +145,19 @@
 	ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
 	NSLog(@"writing \"%@\" to photos album", movieURL);
 	[library writeVideoAtPathToSavedPhotosAlbum:movieURL
-								completionBlock:^(NSURL *assetURL, NSError *error) {
-									if (error) {
-										NSLog(@"assets library failed (%@)", error);
-									}
-									else {
-										[[NSFileManager defaultManager] removeItemAtURL:movieURL error:&error];
-										if (error)
-											NSLog(@"Couldn't remove temporary movie file \"%@\"", movieURL);
-									}
-									movieURL = nil;
-								}];
+								completionBlock:
+     ^(NSURL *assetURL, NSError *error)
+    {
+        if (error) {
+            NSLog(@"assets library failed (%@)", error);
+        }
+        else {
+            [[NSFileManager defaultManager] removeItemAtURL:movieURL error:&error];
+            if (error)
+                NSLog(@"Couldn't remove temporary movie file \"%@\"", movieURL);
+        }
+        movieURL = nil;
+    }];
 }
 
 
@@ -191,7 +189,8 @@
     // e.g. self.myOutlet = nil;
 }
 
--(void)didOutputCGImageBuffer:(NSTimer *)timer {
+-(void)didOutputCGImageBuffer:(NSTimer *)timer
+{
     [video stepFrame];
   	imageView.image = video.currentImage;
     if (startSampleing) 

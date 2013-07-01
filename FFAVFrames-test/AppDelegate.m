@@ -8,7 +8,8 @@
 
 #import "AppDelegate.h"
 
-#import "ViewController.h"
+//#import "ViewController.h"
+#include "ffmpeg-test-jni.h"
 
 @implementation AppDelegate
 
@@ -19,9 +20,12 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
-    self.window.rootViewController = self.viewController;
+//    self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
+//    self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
+    
+    downloadSegment("rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov", "lalax.mov", 30);
+    
     return YES;
 }
 
