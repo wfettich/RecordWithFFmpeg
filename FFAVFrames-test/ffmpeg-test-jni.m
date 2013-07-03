@@ -15,6 +15,7 @@ this is the wrapper of the native functions
 #include <unistd.h>
 #include <assert.h>
 /*ffmpeg headers*/
+#include "libavutil/opt.h"
 #include "libavutil/avstring.h"
 #include "libavutil/pixdesc.h"
 #include "libavutil/imgutils.h"
@@ -31,6 +32,16 @@ this is the wrapper of the native functions
 /*for android logs*/
 
 #define LOG_LEVEL 10
+
+#define LOG_ERR(err,func) \
+if( err < 0) \
+{\
+    char errbuf[400]; \
+    av_strerror(err,errbuf,400); \
+    NSLog(@"%s failed with error %s",func,errbuf); \
+    return EXIT_FAILURE; \
+}
+
 //#define LOGI(level, ...) if (level <= LOG_LEVEL) {__android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__);}
 //#define LOGE(level, ...) if (level <= LOG_LEVEL) {__android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__);}
 
@@ -54,53 +65,6 @@ static double now_ms(void)
 //    return 1000.0 * res.tv_sec + (double) res.tv_nsec / 1e6;
 }
 
-#if DONT_COMPILE == 1
-- (kxMovieError) openVideoStream: (NSInteger) videoStream
-{
-    // get a pointer to the codec context for the video stream
-    AVCodecContext *codecCtx = _formatCtx->streams[videoStream]->codec;
-    
-    // find the decoder for the video stream
-    AVCodec *codec = avcodec_find_decoder(codecCtx->codec_id);
-    if (!codec)
-        return kxMovieErrorCodecNotFound;
-    
-    // inform the codec that we can handle truncated bitstreams -- i.e.,
-    // bitstreams where frame boundaries can fall in the middle of packets
-    //if(codec->capabilities & CODEC_CAP_TRUNCATED)
-    //    _codecCtx->flags |= CODEC_FLAG_TRUNCATED;
-    
-    // open codec
-    if (avcodec_open2(codecCtx, codec, NULL) < 0)
-        return kxMovieErrorOpenCodec;
-    
-    _videoFrame = avcodec_alloc_frame();
-    
-    if (!_videoFrame) {
-        avcodec_close(codecCtx);
-        return kxMovieErrorAllocateFrame;
-    }
-    
-    _videoStream = videoStream;
-    _videoCodecCtx = codecCtx;
-    
-    // determine fps
-    
-    AVStream *st = _formatCtx->streams[_videoStream];
-    avStreamFPSTimeBase(st, 0.04, &_fps, &_videoTimeBase);
-    
-    NSLog(@"video codec size: %d:%d fps: %.3f tb: %f",
-          self.frameWidth,
-          self.frameHeight,
-          _fps,
-          _videoTimeBase);
-    
-    NSLog(@"video start time %f", st->start_time * _videoTimeBase);
-    NSLog(@"video disposition %d", st->disposition);
-    
-    return kxMovieErrorNone;
-}
-#endif
 
 int downloadSegment(
                      const char* url_adress,
@@ -122,10 +86,11 @@ int downloadSegment(
     av_register_all();
     avcodec_register_all();
     avformat_network_init();
+    NSLog(@"ffmpeg version %s",LIBAVFORMAT_IDENT);
     const char* build_conf = avformat_configuration();
     NSLog(@"ffmpeg build conf %s",build_conf);
     
-    AVFormatContext* context = avformat_alloc_context();
+    AVFormatContext* inContext = avformat_alloc_context();
 
     //open rtsp
     AVDictionary *options=NULL;
@@ -133,28 +98,17 @@ int downloadSegment(
     //av_dict_set(&options,"r","100",0);
     //test video, always working: rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov
 
-    int error = avformat_open_input(&context, url_adress,NULL,&options);
-   if( error != 0)
-   {
-       char errbuf[400];
-       av_strerror(error,errbuf,400);
-       NSLog(@"avformat_open_input failed with error %s",errbuf);
-       return EXIT_FAILURE;
-    }
-
+    int err = avformat_open_input(&inContext, url_adress,NULL,&options);
+    LOG_ERR(err, "avformat_open_input")
+    
     NSLog(@"XX 1");
-    if(avformat_find_stream_info(context,NULL) < 0)
+    err = avformat_find_stream_info(inContext,NULL);
+    LOG_ERR(err, "avformat_find_stream_info")
+    
+    //search video stream
+    for(int  i =0;i<inContext->nb_streams;i++)
     {
-        char errbuf[400];
-        av_strerror(error,errbuf,400);
-        NSLog(@"avformat_find_stream_info failed with error %s",errbuf);
-
-        return EXIT_FAILURE;
-    }
- //search video stream
-    for(int  i =0;i<context->nb_streams;i++)
-    {
-        if(context->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO)
+        if(inContext->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO)
         {
             video_stream_index = i;
             NSLog(@"XX 2");
@@ -167,14 +121,14 @@ int downloadSegment(
     //open output file
     AVOutputFormat* fmt = av_guess_format("mp4",NULL,NULL);
 
-    AVFormatContext* oc = avformat_alloc_context();
+    AVFormatContext* outContext = avformat_alloc_context();
 //    AVFormatContext* oc = context;
-    oc->oformat = fmt;
-    oc->duration=100;
-    AVDictionary *options2=NULL;
+    outContext->oformat = fmt;
+//    oc->duration=100;
     
+    AVDictionary *options2=NULL;
     //av_dict_set(&options2,"r","1",0);
-    avio_open2(&oc->pb, save_path, AVIO_FLAG_WRITE,NULL,NULL);
+    avio_open2(&outContext->pb, save_path, AVIO_FLAG_WRITE,NULL,NULL);
     
     NSLog(@"XX 4");
     AVStream* stream=NULL;
@@ -186,7 +140,7 @@ int downloadSegment(
     double start_ms=-1;
     
     NSLog(@"XX 5");
-    while(av_read_frame(context,&packet)>=0 &&delta<duration)
+    while(av_read_frame(inContext,&packet)>=0 &&delta<duration)
     {
         NSLog(@"cnt:: %d",cnt);
         NSLog(@"delta= %f", delta);
@@ -207,21 +161,24 @@ int downloadSegment(
         if(packet.stream_index == video_stream_index)
         {//packet is video
             NSLog(@"XX 7");
+            
             if(stream == NULL)
             {//create stream in file
+                
                 NSLog(@"XX 8");
-                stream = avformat_new_stream(oc,context->streams[video_stream_index]->codec->codec);
+                stream = avformat_new_stream(outContext,inContext->streams[video_stream_index]->codec->codec);
 
-                avcodec_copy_context(stream->codec,context->streams[video_stream_index]->codec);
+                avcodec_copy_context(stream->codec,inContext->streams[video_stream_index]->codec);
 
-                stream->sample_aspect_ratio = context->streams[video_stream_index]->codec->sample_aspect_ratio;
+                stream->sample_aspect_ratio = inContext->streams[video_stream_index]->codec->sample_aspect_ratio;
+                
                 stream->codec->time_base.den=93000;  //invers prop cu lungimea filmului
-                avformat_write_header(oc,NULL);
-
+                err = avformat_write_header(outContext,NULL);
+                LOG_ERR(err, "avformat_write_header")
             }
             packet.stream_index = stream->id;
-            int a=av_write_frame(oc,&packet);
-NSLog(@"a: %d",a);
+            int a=av_write_frame(outContext,&packet);
+            LOG_ERR(a,"av_write_frame")
             cnt++;
         }
 
@@ -229,10 +186,10 @@ NSLog(@"a: %d",a);
     }
     
     NSLog(@"XX 9");
-    av_read_pause(context);
-    av_write_trailer(oc);
-    avio_close(oc->pb);
-    avformat_free_context(oc);
+    av_read_pause(inContext);
+    av_write_trailer(outContext);
+    avio_close(outContext->pb);
+    avformat_free_context(outContext);
 
     return (EXIT_SUCCESS);
 }	
