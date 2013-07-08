@@ -16,6 +16,8 @@
 @synthesize window = _window;
 @synthesize viewController = _viewController;
 
+int rtsp_download(const char * url_address, const char * save_path, int duration);
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -25,7 +27,7 @@
     [self.window makeKeyAndVisible];
     
     //rtsp://89.35.37.82/axis-media/media.amp?resolution=320x240
-    downloadSegment("rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov", "lalax.mov", 30);
+    rtsp_download("rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov", "test.mp4", 20);
 //    downloadSegment();
     
     return YES;
