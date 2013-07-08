@@ -4,29 +4,69 @@
 #include "libavcodec/avcodec.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
+#define LOG_ERR_AND_EXIT(err,func) \
+if( err < 0) \
+{\
+char errbuf[400]; \
+av_strerror(err,errbuf,400); \
+NSLog(@"%s failed with error %s",func,errbuf); \
+return EXIT_FAILURE; \
+}
+
+#define LOG_ERR(err,func) \
+if( err < 0) \
+{\
+char errbuf[400]; \
+av_strerror(err,errbuf,400); \
+NSLog(@"%s failed with error %s",func,errbuf); \
+}
+
+
+NSObject* mutex;
+
 AVFormatContext* open_input_context(const char * url_address);
 int init_stream_copy(AVFormatContext *oc, AVCodecContext *codec, AVStream *ost, AVCodecContext *icodec, AVStream *ist);
 void saveMovieToCameraRoll();
 
-int rtsp_download(const char * url_address, const char * save_path, int duration)
+void init_ffmpeg()
 {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        mutex = [[NSObject alloc] init];
+    });
+    
     av_register_all();
     avformat_network_init();
-    
-    NSLog(@"ffmpeg version %s",LIBAVFORMAT_IDENT);
-    const char* build_conf = avformat_configuration();
-    NSLog(@"ffmpeg build conf %s",build_conf);
+}
 
-    
-    AVFormatContext *input_context = open_input_context(url_address);
+int rtsp_download(const char * url_address, const char * save_path, int duration)
+{
+//    NSLog(@"ffmpeg version %s",LIBAVFORMAT_IDENT);
+//    const char* build_conf = avformat_configuration();
+//    NSLog(@"ffmpeg build conf %s",build_conf);
+
+    AVFormatContext *input_context;
+    @synchronized(mutex)
+    {
+//        NSLog(@"lock acquired for path: %s",save_path);
+        input_context = open_input_context(url_address);
+        if ((int)input_context == EXIT_FAILURE)
+        {
+            NSLog(@"input_context is invalid");
+            return EXIT_FAILURE;
+        }
+//        NSLog(@"lock released for path: %s",save_path);
+    }
     AVFormatContext *output_context = NULL;
     AVOutputFormat *output_format;
     AVStream *output_video_stream = NULL, *input_video_stream = NULL;
     int video_stream_index = -1;
 
-    // {{{ Verify input_context and get video_stream
     if(!input_context)
-	return EXIT_FAILURE;
+    {
+        NSLog(@"input_context is nil");
+        return EXIT_FAILURE;
+    }
 
     for(unsigned int i = 0; i < input_context->nb_streams; i++)
     {
@@ -65,20 +105,14 @@ int rtsp_download(const char * url_address, const char * save_path, int duration
     int err = init_stream_copy(output_context, output_video_stream->codec, output_video_stream,
 	    input_video_stream->codec, input_video_stream);
     
-    if (err != 0)
-    {
-        NSLog(@"init_stream_copy failed with code: %d",err);
-        return EXIT_FAILURE;
-    }
+    LOG_ERR_AND_EXIT(err, "init_stream_copy");
 
-    NSLog(@"save path: %s",save_path);
-    if(avio_open(&output_context->pb, save_path, AVIO_FLAG_WRITE) < 0)
-    {
-        NSLog(@"Could not open output file");
-        return EXIT_FAILURE;
-    }
-    avformat_write_header(output_context, NULL);
-    // }}} 
+    err = avio_open(&output_context->pb, save_path, AVIO_FLAG_WRITE);
+    LOG_ERR_AND_EXIT(err, "avio_open");
+    
+    err = avformat_write_header(output_context, NULL);
+    LOG_ERR_AND_EXIT(err, "avformat_write_header");
+
 
     AVPacket packet;
     av_init_packet(&packet);
@@ -90,7 +124,8 @@ int rtsp_download(const char * url_address, const char * save_path, int duration
         if(packet.stream_index == video_stream_index)
         {
             packet.stream_index = output_video_stream->index;
-            av_interleaved_write_frame(output_context, &packet);
+            int err = av_interleaved_write_frame(output_context, &packet);
+            LOG_ERR(err, "av_interleaved_write_frame");
         }
 
         av_free_packet(&packet);
@@ -106,8 +141,11 @@ int rtsp_download(const char * url_address, const char * save_path, int duration
     avformat_close_input(&input_context);
     avformat_free_context(output_context);
 
-    saveMovieToCameraRoll(save_path);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        saveMovieToCameraRoll(save_path);
+    });
     
+    NSLog(@"recording finished for filename: %s",save_path);
     return 1;
 }
 
@@ -140,19 +178,13 @@ AVFormatContext* open_input_context(const char * url_address)
     AVFormatContext *input_context = avformat_alloc_context();
     AVDictionary *options = NULL;
 
-    av_dict_set(&options, "rtsp_transport", "udp", 0);
+    av_dict_set(&options, "rtsp_transport", "tcp", 0);
 
-    if(avformat_open_input(&input_context, url_address, NULL, &options) < 0)
-    {
-        NSLog(@"Failed to open input context");
-        return NULL;
-    }
-
-    if(avformat_find_stream_info(input_context, NULL) < 0)
-    {
-        NSLog(@"Failed to find stream info");
-        return NULL;
-    }
-
+    int err = avformat_open_input(&input_context, url_address, NULL, &options);
+    LOG_ERR_AND_EXIT(err, "avformat_open_input");
+    
+    err = avformat_find_stream_info(input_context, NULL);
+    LOG_ERR_AND_EXIT(err, "avformat_find_stream_info");
+    
     return input_context;
 }

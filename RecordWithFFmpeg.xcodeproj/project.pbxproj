@@ -46,6 +46,7 @@
 		30D367041573D1DE003471CC /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		30E35B301573F98700A9A1DA /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		30E35B351573F9D200A9A1DA /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		B63CBD58178AFA2500CD9461 /* rtsp_download.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtsp_download.h; sourceTree = "<group>"; };
 		B64FFFD6177C6684002C585C /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		B64FFFD8177C6798002C585C /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		B6B57FEE17818E6C00E911E4 /* libbz2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.dylib; path = usr/lib/libbz2.dylib; sourceTree = SDKROOT; };
@@ -129,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				B6B5803F1787272C00E911E4 /* rtsp_download.m */,
+				B63CBD58178AFA2500CD9461 /* rtsp_download.h */,
 				B6B580411787272D00E911E4 /* copy_stream.m */,
 				30D366D51573C9EA003471CC /* AppDelegate.h */,
 				30D366D61573C9EA003471CC /* AppDelegate.m */,

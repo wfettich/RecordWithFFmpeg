@@ -10,10 +10,6 @@ int init_stream_copy(AVFormatContext *oc, AVCodecContext *codec, AVStream *ost, 
 
     extra_size = (uint64_t)icodec->extradata_size + FF_INPUT_BUFFER_PADDING_SIZE;
     
-    NSLog(@"sizeof(uint64_t): %ld",sizeof(uint64_t));
-    NSLog(@"icodec->extradata_size: %d",icodec->extradata_size);
-    NSLog(@"FF_INPUT_BUFFER_PADDING_SIZE: %d",FF_INPUT_BUFFER_PADDING_SIZE);    
-
     if (extra_size > INT_MAX) {
         return AVERROR(EINVAL);
     }
@@ -35,7 +31,6 @@ int init_stream_copy(AVFormatContext *oc, AVCodecContext *codec, AVStream *ost, 
     codec->rc_buffer_size = icodec->rc_buffer_size;
     codec->field_order    = icodec->field_order;
     
-    //ERROR HERE!!!!
     codec->extradata      = (uint8_t*) av_mallocz(extra_size);    
     
     if (!codec->extradata) {

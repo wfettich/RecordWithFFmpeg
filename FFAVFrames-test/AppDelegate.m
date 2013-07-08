@@ -7,13 +7,12 @@
 //
 
 #import "AppDelegate.h"
+#import "rtsp_download.h"
 
 @implementation AppDelegate
 
 @synthesize window = _window;
 @synthesize viewController = _viewController;
-
-int rtsp_download(const char * url_address, const char * save_path, int duration);
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -25,11 +24,23 @@ int rtsp_download(const char * url_address, const char * save_path, int duration
     
     //rtsp://89.35.37.82/axis-media/media.amp?resolution=320x240
 //    rtsp_download("rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov", "test.mp4", 20);
+ 
+    init_ffmpeg();
     
-    rtsp_download("rtsp://a2047.v1412b.c1412.g.vq.akamaistream.net/5/2047/1412/1_h264_350/1a1a1ae555c531960166df4dbc3095c327960d7be756b71b49aa1576e344addb3ead1a497aaedf11/8848125_1_350.mov", [[NSString stringWithFormat:@"%@test.mp4",NSTemporaryDirectory()] UTF8String], 60);
+    [NSThread detachNewThreadSelector:@selector(startRecordingWithFilename:) toTarget:self withObject:@"file1.mov" ];
+    [NSThread detachNewThreadSelector:@selector(startRecordingWithFilename:) toTarget:self withObject:@"file2.mov" ];
+    [NSThread detachNewThreadSelector:@selector(startRecordingWithFilename:) toTarget:self withObject:@"file3.mov" ];
+    [NSThread detachNewThreadSelector:@selector(startRecordingWithFilename:) toTarget:self withObject:@"file4.mov" ];
+    
 //    downloadSegment();
     
     return YES;
+}
+
+-(void) startRecordingWithFilename:(NSString*)filename
+{
+    NSLog(@"recording started for filename: %@",filename);
+    rtsp_download("rtsp://a2047.v1412b.c1412.g.vq.akamaistream.net/5/2047/1412/1_h264_350/1a1a1ae555c531960166df4dbc3095c327960d7be756b71b49aa1576e344addb3ead1a497aaedf11/8848125_1_350.mov", [[NSString stringWithFormat:@"%@%@",NSTemporaryDirectory(),filename] UTF8String], 60);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
