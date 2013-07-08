@@ -19,46 +19,30 @@ ENABLED_COMPONENTS="--enable-protocol=file --enable-demuxer=mov \
  #                   --enable-everything"
 
  CONFIGURE_FLAGS=" 
-                    --enable-everything \
-                    --enable-cross-compile \
-                    --enable-network \
-                    --enable-demuxer=mov \
-                    --enable-demuxer=h264 \
-                    --enable-protocol=file \
-                    --enable-avformat \
-                    --enable-avcodec \
-                    --enable-decoder=rawvideo \
-                    --disable-decoder=mjpeg \
-                    --disable-decoder=h263 \
-                    --enable-decoder=mpeg4 \
-                    --enable-decoder=h264 \
-                    --enable-parser=h264 \                    
-                    --enable-demuxer=rtsp \
-                    --enable-pic \
-                    --enable-zlib"
-
-# CONFIGURE_FLAGS="--enable-cross-compile
-#                --disable-debug 
-#                    --disable-ffmpeg \
-#                    --enable-demuxer=mov \
-#                    --enable-demuxer=h264 \
-#                    --enable-protocol=file \
-#                    --enable-avformat \
-#                    --enable-avcodec \
-#                    --enable-decoder=rawvideo \
-#                    --disable-decoder=mjpeg \
-#                    --disable-decoder=h263 \
-#                    --enable-decoder=mpeg4 \
-#                    --enable-decoder=h264 \
-#                    --enable-parser=h264 \
-#                    --enable-network \
-#                    --disable-protocol=tcp\
-#                    --enable-demuxer=rtsp\
-#                    --enable-pic\
-#                    --enable-zlib \
-#                 ${ENABLED_COMPONENTS}"
-
-   
+                        --disable-asm \
+                        --disable-doc \
+                        --disable-ffmpeg \
+                        --disable-ffserver \
+                        --enable-cross-compile \
+                        --disable-bzlib \
+                        --disable-gpl \
+                        --disable-shared \
+                        --enable-static \
+                        --disable-mmx \
+                        --enable-network \
+                        --enable-protocol=tcp \
+                        --enable-demuxer=rtsp \
+                        --enable-muxer=h264 \
+                        --enable-muxer=mp4 \
+                        --enable-muxer=mov \
+                        --enable-encoder=mpeg4 \
+                        --enable-encoder=h264 \
+                        --enable-decoder=mpeg4 \
+                        --enable-decoder=h264 \
+                        --disable-debug \
+                        --enable-protocol=file \
+                        --disable-neon  \
+                        --enable-pic "
     
 LIBS="libavcodec libavformat libavutil libswscale libavdevice libavfilter \
       libswresample"
@@ -94,7 +78,7 @@ do
         PLATFORM="iPhoneOS"
         COMPILER="llvm-gcc"
         CONFIG_ARCH="arm"
-        CPU="cortex-a9"
+        CPU="cortex-a8"
     fi
 
     XCRUN_SDK=$(echo ${PLATFORM} | tr '[:upper:]' '[:lower:]')

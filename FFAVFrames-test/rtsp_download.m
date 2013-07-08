@@ -10,7 +10,12 @@ int rtsp_download(const char * url_address, const char * save_path, int duration
 {
     av_register_all();
     avformat_network_init();
+    
+    NSLog(@"ffmpeg version %s",LIBAVFORMAT_IDENT);
+    const char* build_conf = avformat_configuration();
+    NSLog(@"ffmpeg build conf %s",build_conf);
 
+    
     AVFormatContext *input_context = open_input_context(url_address);
     AVFormatContext *output_context = NULL;
     AVOutputFormat *output_format;
@@ -40,10 +45,7 @@ int rtsp_download(const char * url_address, const char * save_path, int duration
 
     // {{{ Init output_context and create video stream
     
-    output_context = avformat_alloc_context();
-    AVOutputFormat* fmt = av_guess_format("mp4",NULL,NULL);
-    output_context->oformat = fmt;
-//    avformat_alloc_output_context2(&output_context, NULL, NULL, save_path);
+    avformat_alloc_output_context2(&output_context, NULL, NULL, save_path);
     if(!output_context)
     {
         NSLog(@"Could not deduce output format from file extension");
@@ -61,9 +63,7 @@ int rtsp_download(const char * url_address, const char * save_path, int duration
     init_stream_copy(output_context, output_video_stream->codec, output_video_stream,
 	    input_video_stream->codec, input_video_stream);
 
-//    avio_open2(&outContext->pb, save_path, AVIO_FLAG_WRITE,NULL,NULL);
-//    if(avio_open(&output_context->pb, save_path, AVIO_FLAG_WRITE) < 0)
-    if(avio_open2(&output_context->pb, save_path, AVIO_FLAG_WRITE,NULL,NULL) < 0)
+    if(avio_open(&output_context->pb, save_path, AVIO_FLAG_WRITE) < 0)
     {
         NSLog(@"Could not open output file");
         return EXIT_FAILURE;
