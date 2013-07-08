@@ -16,7 +16,6 @@
 		30D366EA1573CBD8003471CC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30D366E91573CBD8003471CC /* AVFoundation.framework */; };
 		30D366EC1573CBE1003471CC /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30D366EB1573CBE1003471CC /* CoreVideo.framework */; };
 		30D367051573D1DE003471CC /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30D367041573D1DE003471CC /* AssetsLibrary.framework */; };
-		30E35AFE1573F87B00A9A1DA /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30E35AFC1573F87B00A9A1DA /* ViewController.xib */; };
 		30E35B311573F98700A9A1DA /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E35B301573F98700A9A1DA /* CoreImage.framework */; };
 		30E35B361573F9D200A9A1DA /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E35B351573F9D200A9A1DA /* CoreMedia.framework */; };
 		B64FFFD7177C6684002C585C /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B64FFFD6177C6684002C585C /* libz.dylib */; };
@@ -45,26 +44,17 @@
 		30D366E91573CBD8003471CC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		30D366EB1573CBE1003471CC /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		30D367041573D1DE003471CC /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
-		30E35AFA1573F87B00A9A1DA /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		30E35AFB1573F87B00A9A1DA /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		30E35AFC1573F87B00A9A1DA /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		30E35B301573F98700A9A1DA /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		30E35B351573F9D200A9A1DA /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		B64FFFD6177C6684002C585C /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		B64FFFD8177C6798002C585C /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
-		B68624C2177DF3C3005728C1 /* test1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test1.c; sourceTree = "<group>"; };
-		B6B502E217749F6B009D20A6 /* ffmpeg-test-jni.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ffmpeg-test-jni.m"; sourceTree = "<group>"; };
-		B6B502E41774A761009D20A6 /* ffmpeg-test-jni.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ffmpeg-test-jni.h"; sourceTree = "<group>"; };
 		B6B57FEE17818E6C00E911E4 /* libbz2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.dylib; path = usr/lib/libbz2.dylib; sourceTree = SDKROOT; };
 		B6B5800A1781CFFC00E911E4 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = ffmpeg4ios/lib/libavutil.a; sourceTree = "<group>"; };
 		B6B5800B1781CFFC00E911E4 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = ffmpeg4ios/lib/libswscale.a; sourceTree = "<group>"; };
 		B6B5800C1781CFFC00E911E4 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ffmpeg4ios/lib/libavcodec.a; sourceTree = "<group>"; };
 		B6B5800D1781CFFC00E911E4 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = ffmpeg4ios/lib/libavformat.a; sourceTree = "<group>"; };
 		B6B5800E1781CFFC00E911E4 /* libavdevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavdevice.a; path = ffmpeg4ios/lib/libavdevice.a; sourceTree = "<group>"; };
-		B6B5801417832E0F00E911E4 /* test2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = test2.m; sourceTree = "<group>"; };
-		B6B580161783328800E911E4 /* test2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test2.h; sourceTree = "<group>"; };
 		B6B5803F1787272C00E911E4 /* rtsp_download.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = rtsp_download.m; sourceTree = "<group>"; };
-		B6B580401787272C00E911E4 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		B6B580411787272D00E911E4 /* copy_stream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = copy_stream.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -139,19 +129,10 @@
 			isa = PBXGroup;
 			children = (
 				B6B5803F1787272C00E911E4 /* rtsp_download.m */,
-				B6B580401787272C00E911E4 /* main.cpp */,
 				B6B580411787272D00E911E4 /* copy_stream.m */,
-				B6B502E217749F6B009D20A6 /* ffmpeg-test-jni.m */,
-				B6B502E41774A761009D20A6 /* ffmpeg-test-jni.h */,
-				30E35AFA1573F87B00A9A1DA /* ViewController.h */,
-				30E35AFB1573F87B00A9A1DA /* ViewController.m */,
-				30E35AFC1573F87B00A9A1DA /* ViewController.xib */,
 				30D366D51573C9EA003471CC /* AppDelegate.h */,
 				30D366D61573C9EA003471CC /* AppDelegate.m */,
 				30D366CD1573C9EA003471CC /* Supporting Files */,
-				B68624C2177DF3C3005728C1 /* test1.c */,
-				B6B5801417832E0F00E911E4 /* test2.m */,
-				B6B580161783328800E911E4 /* test2.h */,
 			);
 			path = "FFAVFrames-test";
 			sourceTree = "<group>";
@@ -219,7 +200,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				30D366D11573C9EA003471CC /* InfoPlist.strings in Resources */,
-				30E35AFE1573F87B00A9A1DA /* ViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

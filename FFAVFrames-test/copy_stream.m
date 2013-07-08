@@ -15,7 +15,7 @@ int init_stream_copy(AVFormatContext *oc, AVCodecContext *codec, AVStream *ost, 
     NSLog(@"FF_INPUT_BUFFER_PADDING_SIZE: %d",FF_INPUT_BUFFER_PADDING_SIZE);    
 
     if (extra_size > INT_MAX) {
-	return AVERROR(EINVAL);
+        return AVERROR(EINVAL);
     }
 
     /* if stream_copy is selected, no need to decode or encode */
@@ -39,7 +39,7 @@ int init_stream_copy(AVFormatContext *oc, AVCodecContext *codec, AVStream *ost, 
     codec->extradata      = (uint8_t*) av_mallocz(extra_size);    
     
     if (!codec->extradata) {
-	return AVERROR(ENOMEM);
+        return AVERROR(ENOMEM);
     }
     memcpy(codec->extradata, icodec->extradata, icodec->extradata_size);
     codec->extradata_size= icodec->extradata_size;

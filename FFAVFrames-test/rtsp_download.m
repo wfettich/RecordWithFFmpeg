@@ -2,9 +2,11 @@
 #include "libavutil/avutil.h"
 #include "libavformat/avformat.h"
 #include "libavcodec/avcodec.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 AVFormatContext* open_input_context(const char * url_address);
 int init_stream_copy(AVFormatContext *oc, AVCodecContext *codec, AVStream *ost, AVCodecContext *icodec, AVStream *ist);
+void saveMovieToCameraRoll();
 
 int rtsp_download(const char * url_address, const char * save_path, int duration)
 {
@@ -60,9 +62,16 @@ int rtsp_download(const char * url_address, const char * save_path, int duration
             output_video_stream->codec->flags |= CODEC_FLAG_GLOBAL_HEADER;
     }
 
-    init_stream_copy(output_context, output_video_stream->codec, output_video_stream,
+    int err = init_stream_copy(output_context, output_video_stream->codec, output_video_stream,
 	    input_video_stream->codec, input_video_stream);
+    
+    if (err != 0)
+    {
+        NSLog(@"init_stream_copy failed with code: %d",err);
+        return EXIT_FAILURE;
+    }
 
+    NSLog(@"save path: %s",save_path);
     if(avio_open(&output_context->pb, save_path, AVIO_FLAG_WRITE) < 0)
     {
         NSLog(@"Could not open output file");
@@ -97,7 +106,33 @@ int rtsp_download(const char * url_address, const char * save_path, int duration
     avformat_close_input(&input_context);
     avformat_free_context(output_context);
 
+    saveMovieToCameraRoll(save_path);
+    
     return 1;
+}
+
+
+void saveMovieToCameraRoll(const char* filepath)
+{
+    // save the movie to the camera roll
+	ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+	NSLog(@"writing \"%s\" to photos album", filepath);
+    
+    NSURL* movieURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%s",filepath]];
+    
+	[library writeVideoAtPathToSavedPhotosAlbum:movieURL
+								completionBlock:
+     ^(NSURL *assetURL, NSError *error)
+     {
+         if (error) {
+             NSLog(@"assets library failed (%@)", error);
+         }
+         else {
+             [[NSFileManager defaultManager] removeItemAtURL:movieURL error:&error];
+             if (error)
+                 NSLog(@"Couldn't remove temporary movie file \"%@\"", movieURL);
+         }
+     }];
 }
 
 AVFormatContext* open_input_context(const char * url_address)
