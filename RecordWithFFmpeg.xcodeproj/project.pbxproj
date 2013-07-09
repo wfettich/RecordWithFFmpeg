@@ -18,6 +18,7 @@
 		30D367051573D1DE003471CC /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30D367041573D1DE003471CC /* AssetsLibrary.framework */; };
 		30E35B311573F98700A9A1DA /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E35B301573F98700A9A1DA /* CoreImage.framework */; };
 		30E35B361573F9D200A9A1DA /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E35B351573F9D200A9A1DA /* CoreMedia.framework */; };
+		B63CBD5B178B13FD00CD9461 /* NSString+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = B63CBD5A178B13FD00CD9461 /* NSString+Utils.m */; };
 		B64FFFD7177C6684002C585C /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B64FFFD6177C6684002C585C /* libz.dylib */; };
 		B64FFFD9177C6798002C585C /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B64FFFD8177C6798002C585C /* libiconv.dylib */; };
 		B6B57FEF17818E6C00E911E4 /* libbz2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B57FEE17818E6C00E911E4 /* libbz2.dylib */; };
@@ -47,6 +48,8 @@
 		30E35B301573F98700A9A1DA /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		30E35B351573F9D200A9A1DA /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		B63CBD58178AFA2500CD9461 /* rtsp_download.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtsp_download.h; sourceTree = "<group>"; };
+		B63CBD59178B13FD00CD9461 /* NSString+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Utils.h"; sourceTree = "<group>"; };
+		B63CBD5A178B13FD00CD9461 /* NSString+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utils.m"; sourceTree = "<group>"; };
 		B64FFFD6177C6684002C585C /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		B64FFFD8177C6798002C585C /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		B6B57FEE17818E6C00E911E4 /* libbz2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.dylib; path = usr/lib/libbz2.dylib; sourceTree = SDKROOT; };
@@ -97,7 +100,7 @@
 				B6B57FEE17818E6C00E911E4 /* libbz2.dylib */,
 				B64FFFD8177C6798002C585C /* libiconv.dylib */,
 				B64FFFD6177C6684002C585C /* libz.dylib */,
-				30D366CC1573C9EA003471CC /* FFAVFrames-test */,
+				30D366CC1573C9EA003471CC /* RecordWithFFmpeg */,
 				30D366C51573C9EA003471CC /* Frameworks */,
 				30D366C31573C9EA003471CC /* Products */,
 			);
@@ -126,9 +129,11 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		30D366CC1573C9EA003471CC /* FFAVFrames-test */ = {
+		30D366CC1573C9EA003471CC /* RecordWithFFmpeg */ = {
 			isa = PBXGroup;
 			children = (
+				B63CBD59178B13FD00CD9461 /* NSString+Utils.h */,
+				B63CBD5A178B13FD00CD9461 /* NSString+Utils.m */,
 				B6B5803F1787272C00E911E4 /* rtsp_download.m */,
 				B63CBD58178AFA2500CD9461 /* rtsp_download.h */,
 				B6B580411787272D00E911E4 /* copy_stream.m */,
@@ -136,6 +141,7 @@
 				30D366D61573C9EA003471CC /* AppDelegate.m */,
 				30D366CD1573C9EA003471CC /* Supporting Files */,
 			);
+			name = RecordWithFFmpeg;
 			path = "FFAVFrames-test";
 			sourceTree = "<group>";
 		};
@@ -216,6 +222,7 @@
 				30D366D71573C9EA003471CC /* AppDelegate.m in Sources */,
 				B6B580421787272D00E911E4 /* rtsp_download.m in Sources */,
 				B6B580441787272D00E911E4 /* copy_stream.m in Sources */,
+				B63CBD5B178B13FD00CD9461 /* NSString+Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

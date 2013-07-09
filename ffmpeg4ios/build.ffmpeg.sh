@@ -17,11 +17,11 @@ ENABLED_COMPONENTS="--enable-protocol=file --enable-demuxer=mov \
 
  #CONFIGURE_FLAGS=" 
  #                   --enable-everything"
+#                   --disable-ffmpeg \
 
  CONFIGURE_FLAGS=" 
                         --disable-asm \
-                        --disable-doc \
-                        --disable-ffmpeg \
+                        --disable-doc \                        
                         --disable-ffserver \
                         --enable-cross-compile \
                         --disable-bzlib \

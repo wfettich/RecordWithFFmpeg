@@ -10,6 +10,7 @@
 #define RecordWithFFmpeg_rtsp_download_h
 
 void init_ffmpeg();
-int rtsp_download(const char * url_address, const char * save_path, int duration);
-
+int rtsp_download(const char * url_address, const char * save_path, int duration, void (^onComplete)(void));
+void concatenateVideos(NSString* file1,NSString* file2, NSString* outputPath,void (^onComplete)(void));
+void saveMovieToCameraRoll(const char* filepath);
 #endif

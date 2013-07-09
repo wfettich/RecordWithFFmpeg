@@ -9,10 +9,13 @@
 #import "AppDelegate.h"
 #import "rtsp_download.h"
 
+#define tmp(x) [NSTemporaryDirectory() stringByAppendingPathComponent:x]
 @implementation AppDelegate
 
 @synthesize window = _window;
 @synthesize viewController = _viewController;
+
+static int finished = 0;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -40,7 +43,33 @@
 -(void) startRecordingWithFilename:(NSString*)filename
 {
     NSLog(@"recording started for filename: %@",filename);
-    rtsp_download("rtsp://a2047.v1412b.c1412.g.vq.akamaistream.net/5/2047/1412/1_h264_350/1a1a1ae555c531960166df4dbc3095c327960d7be756b71b49aa1576e344addb3ead1a497aaedf11/8848125_1_350.mov", [[NSString stringWithFormat:@"%@%@",NSTemporaryDirectory(),filename] UTF8String], 60);
+    rtsp_download("rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov", [tmp(filename) UTF8String], 20,
+//    rtsp_download("rtsp://a2047.v1412b.c1412.g.vq.akamaistream.net/5/2047/1412/1_h264_350/1a1a1ae555c531960166df4dbc3095c327960d7be756b71b49aa1576e344addb3ead1a497aaedf11/8848125_1_350.mov", [NSStringF(@"%@%@",NSTemporaryDirectory(),filename) UTF8String], 20,
+          ^{
+              finished++;
+              if (finished == 4)
+              {
+                  finished = 0;
+                  void (^onDone)() = ^{
+                      finished++;
+                      if (finished == 2)
+                      {
+                          concatenateVideos(tmp(@"file12.mov"), tmp(@"file34.mov"),tmp(@"final.mov"),
+                            ^{
+                                saveMovieToCameraRoll([tmp(@"final.mov") UTF8String]);
+                            });
+                      }
+                  };
+                  concatenateVideos(tmp(@"file1.mov"),tmp(@"file2.mov"),tmp(@"file12.mov"),onDone);
+//                  concatenateVideos(tmp(@"file1.mov"),tmp(@"file2.mov"),tmp(@"file12.mov"),
+//                  ^{
+//                      NSLog(@"concatenation finished");
+//                      saveMovieToCameraRoll([tmp(@"file12.mov") UTF8String]);
+//                  });
+                  
+                  concatenateVideos(tmp(@"file3.mov"), tmp(@"file4.mov"),tmp(@"file34.mov"),onDone);
+              }
+          });
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

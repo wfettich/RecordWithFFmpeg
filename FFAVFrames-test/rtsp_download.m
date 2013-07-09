@@ -2,7 +2,9 @@
 #include "libavutil/avutil.h"
 #include "libavformat/avformat.h"
 #include "libavcodec/avcodec.h"
+#include "NSString+Utils.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <AVFoundation/AVFoundation.h>
 
 #define LOG_ERR_AND_EXIT(err,func) \
 if( err < 0) \
@@ -39,7 +41,7 @@ void init_ffmpeg()
     avformat_network_init();
 }
 
-int rtsp_download(const char * url_address, const char * save_path, int duration)
+int rtsp_download(const char * url_address, const char * save_path, int duration, void (^onComplete)(void))
 {
 //    NSLog(@"ffmpeg version %s",LIBAVFORMAT_IDENT);
 //    const char* build_conf = avformat_configuration();
@@ -48,14 +50,14 @@ int rtsp_download(const char * url_address, const char * save_path, int duration
     AVFormatContext *input_context;
     @synchronized(mutex)
     {
-//        NSLog(@"lock acquired for path: %s",save_path);
+        NSLog(@"lock acquired for path: %s",save_path);
         input_context = open_input_context(url_address);
         if ((int)input_context == EXIT_FAILURE)
         {
             NSLog(@"input_context is invalid");
             return EXIT_FAILURE;
         }
-//        NSLog(@"lock released for path: %s",save_path);
+        NSLog(@"lock released for path: %s",save_path);
     }
     AVFormatContext *output_context = NULL;
     AVOutputFormat *output_format;
@@ -142,7 +144,7 @@ int rtsp_download(const char * url_address, const char * save_path, int duration
     avformat_free_context(output_context);
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        saveMovieToCameraRoll(save_path);
+        if (onComplete) onComplete();
     });
     
     NSLog(@"recording finished for filename: %s",save_path);
@@ -168,7 +170,13 @@ void saveMovieToCameraRoll(const char* filepath)
          else {
              [[NSFileManager defaultManager] removeItemAtURL:movieURL error:&error];
              if (error)
+             {
                  NSLog(@"Couldn't remove temporary movie file \"%@\"", movieURL);
+             }
+             else
+             {
+                 NSLog(@"done");
+             }
          }
      }];
 }
@@ -180,11 +188,72 @@ AVFormatContext* open_input_context(const char * url_address)
 
     av_dict_set(&options, "rtsp_transport", "tcp", 0);
 
+    NSLog(@"open input");
     int err = avformat_open_input(&input_context, url_address, NULL, &options);
     LOG_ERR_AND_EXIT(err, "avformat_open_input");
+    NSLog(@"open input succesful");
     
     err = avformat_find_stream_info(input_context, NULL);
     LOG_ERR_AND_EXIT(err, "avformat_find_stream_info");
     
     return input_context;
+}
+
+void concatenateVideos(NSString* file1,NSString* file2, NSString* outputPath,void (^onComplete)(void))
+{
+    if(NO == [[NSFileManager defaultManager] fileExistsAtPath:file1])
+    {
+        NSLog(@"file not found at path: %@",file1);
+        return;
+    }
+
+    if(NO == [[NSFileManager defaultManager] fileExistsAtPath:file2])
+    {
+        NSLog(@"file not found at path: %@",file2);
+        return;
+    }
+    
+    //Here where load our movie Assets using AVURLAsset
+    AVURLAsset* asset1 = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:file1] options:nil];
+    AVURLAsset* asset2 = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:file2] options:nil];
+    
+    AVMutableComposition* composition = [[AVMutableComposition alloc] init];
+    
+    //Here we are creating the first AVMutableCompositionTrack. See how we are adding a new track to our AVMutableComposition.
+    AVMutableCompositionTrack *track1 = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+    
+    //Now we set the length of the firstTrack equal to the length of the firstAsset and add the firstAsset to out newly created track at kCMTimeZero so video plays from the start of the track.
+    [track1 insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset1.duration) ofTrack:[[asset1 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
+    
+    [track1 insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset2.duration) ofTrack:[[asset2 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:CMTimeAdd(kCMTimeZero,asset1.duration) error:nil];
+    
+    AVMutableVideoCompositionInstruction * mainInstruct = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+    mainInstruct.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeAdd(asset1.duration, asset2.duration));
+    
+    AVMutableVideoCompositionLayerInstruction *layerInstruct1 = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:track1];
+    
+    mainInstruct.layerInstructions = @[layerInstruct1];
+    
+    AVMutableVideoComposition *videoComposition = [AVMutableVideoComposition videoComposition];
+    videoComposition.instructions = @[mainInstruct];
+//    mainInstruct.frameDuration = CMTimeMake(1, 30);
+//    mainInstruct.renderSize = CGSizeMake(640, 480);
+    
+    if([[NSFileManager defaultManager] fileExistsAtPath:outputPath])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:outputPath error:nil];
+    }
+    
+    NSURL *url = [NSURL fileURLWithPath:outputPath];
+    
+//    AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:composition presetName:AVAssetExportPresetPassthrough];
+    AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:composition presetName:AVAssetExportPresetHighestQuality];
+    exporter.outputURL=url;
+    exporter.outputFileType=AVFileTypeQuickTimeMovie;
+    
+    [exporter exportAsynchronouslyWithCompletionHandler:
+     ^{
+        NSLog(@"videos concatenated");
+        if (onComplete) onComplete ();
+    }];
 }
