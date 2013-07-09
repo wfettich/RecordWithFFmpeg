@@ -43,7 +43,7 @@ static int finished = 0;
 -(void) startRecordingWithFilename:(NSString*)filename
 {
     NSLog(@"recording started for filename: %@",filename);
-    rtsp_download("rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov", [tmp(filename) UTF8String], 20,
+    rtsp_download("rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov", [tmp(filename) UTF8String], 60,
 //    rtsp_download("rtsp://a2047.v1412b.c1412.g.vq.akamaistream.net/5/2047/1412/1_h264_350/1a1a1ae555c531960166df4dbc3095c327960d7be756b71b49aa1576e344addb3ead1a497aaedf11/8848125_1_350.mov", [NSStringF(@"%@%@",NSTemporaryDirectory(),filename) UTF8String], 20,
           ^{
               finished++;

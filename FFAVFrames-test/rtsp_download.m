@@ -50,14 +50,12 @@ int rtsp_download(const char * url_address, const char * save_path, int duration
     AVFormatContext *input_context;
     @synchronized(mutex)
     {
-        NSLog(@"lock acquired for path: %s",save_path);
         input_context = open_input_context(url_address);
         if ((int)input_context == EXIT_FAILURE)
         {
             NSLog(@"input_context is invalid");
             return EXIT_FAILURE;
         }
-        NSLog(@"lock released for path: %s",save_path);
     }
     AVFormatContext *output_context = NULL;
     AVOutputFormat *output_format;
@@ -115,7 +113,6 @@ int rtsp_download(const char * url_address, const char * save_path, int duration
     err = avformat_write_header(output_context, NULL);
     LOG_ERR_AND_EXIT(err, "avformat_write_header");
 
-
     AVPacket packet;
     av_init_packet(&packet);
 
@@ -168,7 +165,7 @@ void saveMovieToCameraRoll(const char* filepath)
              NSLog(@"assets library failed (%@)", error);
          }
          else {
-             [[NSFileManager defaultManager] removeItemAtURL:movieURL error:&error];
+//             [[NSFileManager defaultManager] removeItemAtURL:movieURL error:&error];
              if (error)
              {
                  NSLog(@"Couldn't remove temporary movie file \"%@\"", movieURL);
@@ -246,8 +243,7 @@ void concatenateVideos(NSString* file1,NSString* file2, NSString* outputPath,voi
     
     NSURL *url = [NSURL fileURLWithPath:outputPath];
     
-//    AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:composition presetName:AVAssetExportPresetPassthrough];
-    AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:composition presetName:AVAssetExportPresetHighestQuality];
+    AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:composition presetName:AVAssetExportPresetPassthrough];
     exporter.outputURL=url;
     exporter.outputFileType=AVFileTypeQuickTimeMovie;
     
