@@ -43,7 +43,7 @@ static int finished = 0;
 -(void) startRecordingWithFilename:(NSString*)filename
 {
     NSLog(@"recording started for filename: %@",filename);
-    rtsp_download("rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov", [tmp(filename) UTF8String], 60,
+    rtsp_download("rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov", [tmp(filename) UTF8String], 20,
 //    rtsp_download("rtsp://a2047.v1412b.c1412.g.vq.akamaistream.net/5/2047/1412/1_h264_350/1a1a1ae555c531960166df4dbc3095c327960d7be756b71b49aa1576e344addb3ead1a497aaedf11/8848125_1_350.mov", [NSStringF(@"%@%@",NSTemporaryDirectory(),filename) UTF8String], 20,
           ^{
               finished++;
@@ -56,7 +56,33 @@ static int finished = 0;
                       {
                           concatenateVideos(tmp(@"file12.mov"), tmp(@"file34.mov"),tmp(@"final.mov"),
                             ^{
-                                saveMovieToCameraRoll([tmp(@"final.mov") UTF8String]);
+                                CMTime lastTime = CMTimeMake(5, 1);
+                                for (int i = 0;i<5;i++)
+                                {
+                                    CMTime interval = CMTimeMake(500, 1000);
+                                    CMTimeRange range = CMTimeRangeMake(lastTime,interval);
+                                    NSString* cutoutName = tmp(NSStringF(@"cutout-%d-1.mov",i));
+                                    cutVideo(tmp(@"final.mov"), range, cutoutName,^{
+                                        saveMovieToCameraRoll([cutoutName UTF8String]);
+                                    });
+                                    lastTime = CMTimeAdd(lastTime, interval);
+                                    
+                                    interval = CMTimeMake(3000, 1000);
+                                    range = CMTimeRangeMake(lastTime,interval);
+                                    cutoutName = tmp(NSStringF(@"cutout-%d-2.mov",i));
+                                    cutVideo(tmp(@"final.mov"), range, cutoutName,^{
+                                        saveMovieToCameraRoll([cutoutName UTF8String]);
+                                    });
+                                    lastTime = CMTimeAdd(lastTime, interval);
+                                    
+                                    interval = CMTimeMake(900, 1000);
+                                    range = CMTimeRangeMake(lastTime,interval);
+                                    cutoutName = tmp(NSStringF(@"cutout-%d-3.mov",i));
+                                    cutVideo(tmp(@"final.mov"), range, cutoutName,^{
+                                        saveMovieToCameraRoll([cutoutName UTF8String]);
+                                    });
+                                    lastTime = CMTimeAdd(lastTime, interval);
+                                }
                             });
                       }
                   };
