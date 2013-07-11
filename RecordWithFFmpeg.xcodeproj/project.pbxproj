@@ -27,8 +27,8 @@
 		B6B580111781CFFC00E911E4 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B5800C1781CFFC00E911E4 /* libavcodec.a */; };
 		B6B580121781CFFC00E911E4 /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B5800D1781CFFC00E911E4 /* libavformat.a */; };
 		B6B580131781CFFC00E911E4 /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B5800E1781CFFC00E911E4 /* libavdevice.a */; };
-		B6B580421787272D00E911E4 /* rtsp_download.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B5803F1787272C00E911E4 /* rtsp_download.m */; };
-		B6B580441787272D00E911E4 /* copy_stream.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B580411787272D00E911E4 /* copy_stream.m */; };
+		B6CEF8A9178DCC3500D013C0 /* copy_stream.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B580411787272D00E911E4 /* copy_stream.m */; };
+		B6CEF8AE178EE70000D013C0 /* IRWRTSPCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CEF8AD178EE70000D013C0 /* IRWRTSPCapture.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,7 +47,6 @@
 		30D367041573D1DE003471CC /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		30E35B301573F98700A9A1DA /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		30E35B351573F9D200A9A1DA /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		B63CBD58178AFA2500CD9461 /* rtsp_download.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtsp_download.h; sourceTree = "<group>"; };
 		B63CBD59178B13FD00CD9461 /* NSString+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Utils.h"; sourceTree = "<group>"; };
 		B63CBD5A178B13FD00CD9461 /* NSString+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utils.m"; sourceTree = "<group>"; };
 		B64FFFD6177C6684002C585C /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -58,8 +57,10 @@
 		B6B5800C1781CFFC00E911E4 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ffmpeg4ios/lib/libavcodec.a; sourceTree = "<group>"; };
 		B6B5800D1781CFFC00E911E4 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = ffmpeg4ios/lib/libavformat.a; sourceTree = "<group>"; };
 		B6B5800E1781CFFC00E911E4 /* libavdevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavdevice.a; path = ffmpeg4ios/lib/libavdevice.a; sourceTree = "<group>"; };
-		B6B5803F1787272C00E911E4 /* rtsp_download.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = rtsp_download.m; sourceTree = "<group>"; };
 		B6B580411787272D00E911E4 /* copy_stream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = copy_stream.m; sourceTree = "<group>"; };
+		B6CEF8AA178ED24E00D013C0 /* rtsp_download.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = rtsp_download.m; sourceTree = "<group>"; };
+		B6CEF8AC178EE70000D013C0 /* IRWRTSPCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRWRTSPCapture.h; sourceTree = "<group>"; };
+		B6CEF8AD178EE70000D013C0 /* IRWRTSPCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRWRTSPCapture.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,10 +133,11 @@
 		30D366CC1573C9EA003471CC /* RecordWithFFmpeg */ = {
 			isa = PBXGroup;
 			children = (
+				B6CEF8AC178EE70000D013C0 /* IRWRTSPCapture.h */,
+				B6CEF8AD178EE70000D013C0 /* IRWRTSPCapture.m */,
+				B6CEF8AA178ED24E00D013C0 /* rtsp_download.m */,
 				B63CBD59178B13FD00CD9461 /* NSString+Utils.h */,
 				B63CBD5A178B13FD00CD9461 /* NSString+Utils.m */,
-				B6B5803F1787272C00E911E4 /* rtsp_download.m */,
-				B63CBD58178AFA2500CD9461 /* rtsp_download.h */,
 				B6B580411787272D00E911E4 /* copy_stream.m */,
 				30D366D51573C9EA003471CC /* AppDelegate.h */,
 				30D366D61573C9EA003471CC /* AppDelegate.m */,
@@ -220,9 +222,9 @@
 			files = (
 				30D366D31573C9EA003471CC /* main.m in Sources */,
 				30D366D71573C9EA003471CC /* AppDelegate.m in Sources */,
-				B6B580421787272D00E911E4 /* rtsp_download.m in Sources */,
-				B6B580441787272D00E911E4 /* copy_stream.m in Sources */,
 				B63CBD5B178B13FD00CD9461 /* NSString+Utils.m in Sources */,
+				B6CEF8A9178DCC3500D013C0 /* copy_stream.m in Sources */,
+				B6CEF8AE178EE70000D013C0 /* IRWRTSPCapture.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,7 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import "rtsp_download.h"
+#import "IRWRTSPCapture.h"
+//#import "rtsp_download.h"
 
 #define tmp(x) [NSTemporaryDirectory() stringByAppendingPathComponent:x]
 @implementation AppDelegate
@@ -27,23 +28,75 @@ static int finished = 0;
     
     //rtsp://89.35.37.82/axis-media/media.amp?resolution=320x240
 //    rtsp_download("rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov", "test.mp4", 20);
- 
-    init_ffmpeg();
     
-    [NSThread detachNewThreadSelector:@selector(startRecordingWithFilename:) toTarget:self withObject:@"file1.mov" ];
-    [NSThread detachNewThreadSelector:@selector(startRecordingWithFilename:) toTarget:self withObject:@"file2.mov" ];
-    [NSThread detachNewThreadSelector:@selector(startRecordingWithFilename:) toTarget:self withObject:@"file3.mov" ];
-    [NSThread detachNewThreadSelector:@selector(startRecordingWithFilename:) toTarget:self withObject:@"file4.mov" ];
+    IRWRTSPCapture* capture = [[IRWRTSPCapture alloc] init];
     
+    NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDir = [path objectAtIndex:0];
+
+    NSArray* files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDir error:nil];
+    
+    for (NSString* file in files)
+    {
+        BOOL ok = [[NSFileManager defaultManager] removeItemAtPath:[documentsDir stringByAppendingPathComponent:file] error:nil];
+        if (!ok)
+        {
+            NSLog(@"remove file failed");
+        }
+    }
+    
+    [capture startStreamCaptureFromAddress:@"rtsp://admin:1234@freedom.soft-class.net:2223/ipcam_h264.sdp" toDirectory:documentsDir];
+    
+    double delayInSeconds = 90;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        capture.shouldStop = YES;
+        
+        double delayInSeconds = 20.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(),
+        ^(void){
+        
+            NSArray* files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDir error:nil];
+            
+            void (^__block concatBlock)();
+            
+            __block int i = 1;
+            concatBlock =
+            [^{
+                i++;
+                if (i<files.count) {
+                    NSString* fulllVideo1 = [documentsDir stringByAppendingPathComponent:NSStringF(@"full%d.mp4",i-1)];
+                    NSString* fulllVideo2 = [documentsDir stringByAppendingPathComponent:NSStringF(@"full%d.mp4",i)];
+                    NSString* fullPath = [documentsDir stringByAppendingPathComponent:files[i]];
+                    [IRWRTSPCapture concatenateVideoAtPath:fulllVideo1 withVideo:fullPath toPath:fulllVideo2 onDone:^{
+                        concatBlock();
+                    }];
+                }
+            } copy];
+            
+            NSString* path1 = [documentsDir stringByAppendingPathComponent:files[0]];
+            NSString* path2 = [documentsDir stringByAppendingPathComponent:files[1]];
+            NSString* fulllVideo1 = [documentsDir stringByAppendingPathComponent:NSStringF(@"full%d.mp4",1)];
+            
+            [IRWRTSPCapture concatenateVideoAtPath:path1 withVideo:path2 toPath:fulllVideo1 onDone:^{
+                concatBlock();
+            }];
+            
+        });
+    });
+    
+//    init_ffmpeg();
 //    downloadSegment();
     
     return YES;
 }
 
+#if 0
 -(void) startRecordingWithFilename:(NSString*)filename
 {
     NSLog(@"recording started for filename: %@",filename);
-    rtsp_download("rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov", [tmp(filename) UTF8String], 20,
+    rtsp_download("", [tmp(filename) UTF8String], 20,
 //    rtsp_download("rtsp://a2047.v1412b.c1412.g.vq.akamaistream.net/5/2047/1412/1_h264_350/1a1a1ae555c531960166df4dbc3095c327960d7be756b71b49aa1576e344addb3ead1a497aaedf11/8848125_1_350.mov", [NSStringF(@"%@%@",NSTemporaryDirectory(),filename) UTF8String], 20,
           ^{
               finished++;
@@ -97,6 +150,7 @@ static int finished = 0;
               }
           });
 }
+#endif
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

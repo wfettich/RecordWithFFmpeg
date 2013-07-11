@@ -14,4 +14,6 @@
     #import "NSString+Utils.h"
     #import <AssetsLibrary/AssetsLibrary.h>
     #import <AVFoundation/AVFoundation.h>
+
+    #define _classStr NSStringFromClass([self class])
 #endif
